@@ -12,9 +12,11 @@
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^5.13.2",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
+    "body-parser": "^1.19.0",
     "dotenv": "^10.0.0"
   }
 }
