@@ -70,10 +70,11 @@ exports.login = catchAsync( async (req, res, next) => {
 });
 
 exports.protect = catchAsync( async (req, res, next) => {
-    let token;
     // 1) Get the token and check if its there
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
+    const auth = req.headers.authorization;
+    let token;
+    if(auth && auth.startsWith('Bearer')) {
+        token = auth.split(' ')[1];
     } else if (req.cookies.jwt) {
         token = req.cookies.jwt;
     }
@@ -84,10 +85,6 @@ exports.protect = catchAsync( async (req, res, next) => {
 
     // 2) Verification token
     const decodedToken = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    // try {
-    // } catch (err) {
-    //     new AppError('Invalid token. Please login again.', 401);
-    // }
 
     // 3) Check if user still exists
     const freshUser = await User.findById(decodedToken.id);
@@ -100,6 +97,7 @@ exports.protect = catchAsync( async (req, res, next) => {
 
     // Access granted to the protected route
     req.user = freshUser;
+    res.locals.user = freshUser;
     next();
 });
 
