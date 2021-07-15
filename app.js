@@ -20,7 +20,7 @@ const limiter = rateLimit({
 
 app.use('/api', limiter);
 
-const userRouter = require('./Routes/userRoutes');
+const userRouter = require('./routes/userRoutes');
 
 process.on('uncaughtException', err => {
     console.log('UNCAUGHT EXCEPTION! 💥 Shutting Down....');
