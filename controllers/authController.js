@@ -42,7 +42,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         passwordConfirm: req.body.passwordConfirm
     });
 
-    const url = `http://localhost:3000/me`;     // API docs link goes here
+    const url = `https://documenter.getpostman.com/view/11750601/TzmBDDwB`;     // API docs link goes here
     await new Email(newUser, url).sendWelcome();
 
     createSendToken(newUser, 201, res);
@@ -104,11 +104,9 @@ exports.protect = catchAsync( async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
-        
         if(!roles.includes(req.user.role)) {
             return next(new AppError('You do not have permission to access this route.', 403));
         }
-
         next();
     }
 };
@@ -139,7 +137,6 @@ exports.forgotPassword = catchAsync( async (req, res, next) => {
         user.passwordResetExpires = undefined;
 
         await user.save({ validateBeforeSave: false });
-        console.log(err);
         return next(new AppError('There was an error sending the reset token. Please try again later.', 500));
     }
 });
