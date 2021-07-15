@@ -74,6 +74,8 @@ exports.protect = catchAsync( async (req, res, next) => {
     // 1) Get the token and check if its there
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
     }
 
     if(!token) {
@@ -81,7 +83,7 @@ exports.protect = catchAsync( async (req, res, next) => {
     }
 
     // 2) Verification token
-    let decodedToken = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const decodedToken = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     // try {
     // } catch (err) {
     //     new AppError('Invalid token. Please login again.', 401);
