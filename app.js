@@ -9,6 +9,8 @@ const xss = require('xss-clean');
 
 const app = express();
 
+app.use(express.static(`${__dirname}/public`));
+
 app.use(helmet());
 const limiter = rateLimit({
     max: 100,
