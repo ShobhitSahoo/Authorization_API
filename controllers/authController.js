@@ -83,8 +83,13 @@ exports.protect = catchAsync( async (req, res, next) => {
         return next(new AppError('You are not allowed to access this page. Please login.', 401));
     }
 
+    let decodedToken;
     // 2) Verification token
-    const decodedToken = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    try {
+        decodedToken = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    } catch(e) {
+        console.log(e);
+    }
 
     // 3) Check if user still exists
     const freshUser = await User.findById(decodedToken.id);
